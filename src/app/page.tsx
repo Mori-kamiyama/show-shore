@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect} from 'react';
 import { CSVLink } from 'react-csv';
-import { Button, Select, MenuItem, Card, CardContent, CardHeader, Typography, CircularProgress } from '@mui/material';
+import { Button, Select, MenuItem, Card, CardContent, CardHeader, Typography, CircularProgress, SelectChangeEvent } from '@mui/material';
 import '@fontsource/roboto';  // Importing a cleaner font
 
 interface Shop {
@@ -115,28 +115,24 @@ export default function SalesCalculator() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
                       <Select
                           value={selectedShopId || ''}
-                          onChange={(e: ChangeEvent<{ value: unknown }>) =>
-                              setSelectedShopId(e.target.value as number)
+                          onChange={(event: SelectChangeEvent<number>) =>
+                              setSelectedShopId(Number(event.target.value))
                           }
                           displayEmpty
                           style={{
                               flex: 1,
-                              height: '48px', // Set height to match the button
+                              height: '48px',
                               borderRadius: '8px',
                               backgroundColor: '#fff',
                               padding: '10px',
                               color: '#333',
                               fontSize: '16px',
                               border: '1px solid #ddd',
-                              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)', // Add slight shadow to input
+                              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
                               transition: 'box-shadow 0.3s ease',
                           }}
-                          onMouseOver={(e) =>
-                              (e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)')
-                          }
-                          onMouseOut={(e) =>
-                              (e.currentTarget.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.1)')
-                          }
+                          onMouseOver={(e) => (e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)')}
+                          onMouseOut={(e) => (e.currentTarget.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.1)')}
                       >
                           <MenuItem value="" disabled>
                               Select Shop
