@@ -43,36 +43,32 @@ export default function SalesCalculator() {
     fetchShops();
   }, []);
 
-  const fetchAndCalculateSales = async () => {
-    if (selectedShopId === null) return;
+    const fetchAndCalculateSales = async () => {
+        if (selectedShopId === null) return;
 
-    setIsLoading(true);
-    setError('');
-    try {
-      const response = await fetch(`https://cash.toromino.net/api/shops/${selectedShopId}/products`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-      const products: Product[] = await response.json();
+        setIsLoading(true);
+        setError('');
+        try {
+            const response = await fetch(`https://cash.toromino.net/api/shops/${selectedShopId}/products`);
+            if (!response.ok) {
+                throw new Error('データの取得に失敗しました');
+            }
+            const products: Product[] = await response.json();
 
-      let total = 0;
-      const sales = products.map((product) => {
-        const productSales = product.amount * parseFloat(product.price);
-        total += productSales;
-        return {
-          productName: product.name,
-          sales: productSales,
-        };
-      });
+            let total = 0;
+            products.forEach((product) => {
+                const productSales = product.amount * parseFloat(product.price);
+                total += productSales;
+            });
 
-      setProducts(products);
-      setTotalSales(total);
-    } catch (err) {
-      setError(`Error fetching or processing data. Please try again. Details: ${(err as Error).message}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+            setProducts(products);
+            setTotalSales(total);
+        } catch (err) {
+            setError(`データの取得または処理に失敗しました。詳細: ${(err as Error).message}`);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
   const csvData = [
     ['ID', '商品名', '単価 (JPY)', '数量', '売り上げ (JPY)'],
